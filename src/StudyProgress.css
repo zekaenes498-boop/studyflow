@@ -1,0 +1,159 @@
+
+.progress-page {
+  display: grid;
+  gap: 24px;
+}
+
+.progress-heading h1 {
+  margin: 6px 0;
+  font-size: clamp(26px, 4vw, 34px);
+  letter-spacing: -1px;
+}
+
+.progress-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.progress-card,
+.progress-panel {
+  padding: 22px;
+  background: #151e30;
+  border: 1px solid #2b3851;
+  border-radius: 18px;
+}
+
+.progress-card-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  background: #263754;
+  border-radius: 12px;
+  font-size: 21px;
+}
+
+.progress-card p {
+  margin: 16px 0 8px;
+  color: #a9b7d0;
+  font-size: 14px;
+}
+
+.progress-card strong {
+  font-size: 30px;
+}
+
+.progress-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.progress-panel h2 {
+  margin: 8px 0 20px;
+  font-size: 20px;
+}
+
+.progress-circle {
+  display: grid;
+  width: 124px;
+  height: 124px;
+  flex-shrink: 0;
+  place-items: center;
+  background: conic-gradient(
+    #70a1ff var(--progress),
+    #29364e 0deg
+  );
+  border-radius: 50%;
+}
+
+.progress-circle-inner {
+  display: flex;
+  width: 98px;
+  height: 98px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #151e30;
+  border-radius: 50%;
+}
+
+.progress-circle-inner strong {
+  font-size: 25px;
+}
+
+.progress-circle-inner span {
+  margin-top: 3px;
+  color: #a9b7d0;
+  font-size: 11px;
+}
+
+.progress-bar-track {
+  height: 10px;
+  overflow: hidden;
+  background: #29364e;
+  border-radius: 20px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #5488ef, #55d6b0);
+  border-radius: inherit;
+  transition: width 0.4s ease;
+}
+
+.progress-panel > .progress-bar-track {
+  margin: 20px 0 12px;
+}
+
+.subject-progress-list {
+  display: grid;
+  gap: 22px;
+}
+
+.subject-progress-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.subject-progress-info span {
+  color: #a9b7d0;
+  font-size: 12px;
+}
+
+.subject-track {
+  height: 8px;
+}
+
+@media (max-width: 650px) {
+  .progress-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-panel-heading {
+    align-items: flex-start;
+  }
+
+  .progress-circle {
+    width: 94px;
+    height: 94px;
+  }
+
+  .progress-circle-inner {
+    width: 74px;
+    height: 74px;
+  }
+
+  .progress-circle-inner strong {
+    font-size: 20px;
+  }
+
+  .progress-card,
+  .progress-panel {
+    padding: 16px;
+  }
+}
