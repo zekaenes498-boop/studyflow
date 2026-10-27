@@ -501,7 +501,7 @@ button {
 .timer-display {
   margin: 24px 0;
   font-size: clamp(48px, 8vw, 72px);
-  font-weigh  at: 800;
+  font-weight: 800;
   letter-spacing: 3px;
   color: #7c9aff;
   font-variant-numeric: tabular-nums;0
