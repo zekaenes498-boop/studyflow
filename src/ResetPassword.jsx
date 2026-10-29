@@ -1,28 +1,38 @@
-
 import { useState } from "react";
 import { supabase } from "./lib/supabaseClient";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setLoading(true);
-    setMessage("");
     setError("");
+    setMessage("");
 
-    const { error } = await supabase.auth.updateUser({
-      password,
-    });
+    if (password.length < 6) {
+      setError("Fjalëkalimi duhet t'i ketë së paku 6 karaktere.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Fjalëkalimet nuk përputhen.");
+      return;
+    }
+
+    setLoading(true);
+
+    const { error } = await supabase.auth.updateUser({ password });
 
     if (error) {
       setError(error.message);
     } else {
-      setMessage("Fjalëkalimi u ndryshua me sukses! Tani mund të kyçesh.");
+      setMessage("Fjalëkalimi u ndryshua me sukses! Mund të kyçesh.");
       setPassword("");
+      setConfirmPassword("");
     }
 
     setLoading(false);
@@ -34,18 +44,26 @@ export default function ResetPassword() {
         <div className="auth-logo">S</div>
         <p className="eyebrow">STUDYFLOW</p>
         <h1>Fjalëkalim i ri</h1>
-        <p className="muted">
-          Shkruaje fjalëkalimin tënd të ri.
-        </p>
+        <p className="muted">Vendose dhe konfirmoje fjalëkalimin e ri.</p>
 
         <label className="auth-label">
           Fjalëkalimi i ri
           <input
             type="password"
-            placeholder="Të paktën 6 karaktere"
             minLength={6}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label>
+
+        <label className="auth-label">
+          Konfirmo fjalëkalimin
+          <input
+            type="password"
+            minLength={6}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
         </label>

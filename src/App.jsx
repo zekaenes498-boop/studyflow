@@ -5,7 +5,7 @@ import StudyCalendar from "./StudyCalendar";
 import StudyProgress from "./StudyProgress";
 import ResetPassword from "./ResetPassword";
 import StudyDashboard from "./StudyDashboard";
-
+import AIExamCoach from "./AIExamCoach";
 
 function AuthScreen() {
   const [mode, setMode] = useState("login");
@@ -202,10 +202,14 @@ const [editingTask, setEditingTask] = useState(null);
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setSession(nextSession);
-      setAuthLoading(false);
-    });
+    } = supabase.auth.onAuthStateChange((event, nextSession) => {
+  setSession(nextSession);
+  setAuthLoading(false);
+
+  if (event === "PASSWORD_RECOVERY") {
+    window.history.replaceState({}, "", "/reset-password");
+  }
+});
 
     return () => {
       active = false;
@@ -253,32 +257,36 @@ const [editingTask, setEditingTask] = useState(null);
     };
   }, [session?.user?.id]);
 
-  async function addTask(title, subject, dueDate, priority) {
-    if (!session?.user?.id) return;
+  
+async function addTask(title, subject, dueDate, priority) {
+  if (!session?.user?.id) return false;
 
-    const { data, error } = await supabase
-      .from("tasks")
-      .insert({
-        user_id: session.user.id,
-        title,
-        subject,
-        due_date: dueDate || null,
-        priority,
-        completed: false,
-      })
-      .select()
-      .single();
+  const { data, error } = await supabase
+    .from("tasks")
+    .insert({
+      user_id: session.user.id,
+      title,
+      subject,
+      due_date: dueDate || null,
+      priority,
+      completed: false,
+    })
+    .select()
+    .single();
 
-    if (error) {
-      setError(error.message);
-      return;
-    }
-
-    setTasks((previous) => [
-      { ...data, dueDate: data.due_date },
-      ...previous,
-    ]);
+  if (error) {
+    setError(error.message);
+    return false;
   }
+
+  setTasks((previous) => [
+    { ...data, dueDate: data.due_date },
+    ...previous,
+  ]);
+
+  return true;
+}
+
 
   async function toggleTask(id, completed) {
     const { error } = await supabase
@@ -360,11 +368,9 @@ const pendingTasks = tasks.length - completedTasks;
 const progress = tasks.length
   ? Math.round((completedTasks / tasks.length) * 100)
   : 0;
-  
-const [searchTerm, setSearchTerm] = useState("");
-const [filter, setFilter] = useState("all");
-const [subjectFilter, setSubjectFilter] = useState("all");
-
+  const [filter, setFilter] = useState("all");
+  const [subjectFilter, setSubjectFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
 
 const filteredTasks = tasks.filter((task) => {
@@ -446,6 +452,14 @@ if (!session) {
   onClick={() => setActivePage("progress")}
 >
   📊 Progresi
+  <button
+  className={`nav-button ${
+    activePage === "ai-coach" ? "active" : ""
+  }`}
+  onClick={() => setActivePage("ai-coach")}
+>
+  ✨ AI Exam Coach
+</button>
 </button>
 
 
@@ -479,6 +493,9 @@ if (!session) {
         </header>
 
 <section className="page-section">
+  {activePage === "ai-coach" && (
+  <AIExamCoach onAddTask={addTask} />
+)}
  
 {activePage === "dashboard" && (
   <StudyDashboard tasks={tasks} />
@@ -504,13 +521,7 @@ if (!session) {
       ) : (
         <div className="panel">
           <div className="task-filters">
-            <input
-  type="search"
-  placeholder="🔎 Kërko detyrë ose lëndë..."
-  value={searchTerm}
-  onChange={(event) => setSearchTerm(event.target.value)}
-  aria-label="Kërko detyrë ose lëndë"
- />
+            
             <select
               value={filter}
               onChange={(event) => setFilter(event.target.value)}
