@@ -419,17 +419,17 @@ if (!session) {
 <p className="nav-label">MENUJA</p>
 
 <button
-  className={`nav-button ${activePage === "dashboard" ? "active" : ""}`}
-  onClick={() => setActivePage("dashboard")}
+  className={`nav-button ${activePage === "progress" ? "active" : ""}`}
+  onClick={() => setActivePage("progress")}
 >
-  🏠 Dashboard
+  📊 Progresi
 </button>
 
 <button
-  className={`nav-button ${activePage === "tasks" ? "active" : ""}`}
-  onClick={() => setActivePage("tasks")}
+  className={`nav-button ${activePage === "ai-coach" ? "active" : ""}`}
+  onClick={() => setActivePage("ai-coach")}
 >
-  📚 Detyrat
+  ✨ AI Exam Coach
 </button>
 
 
@@ -451,8 +451,17 @@ if (!session) {
   className={`nav-button ${activePage === "progress" ? "active" : ""}`}
   onClick={() => setActivePage("progress")}
 >
+ 
+<button
+  className={`nav-button ${
+    activePage === "progress" ? "active" : ""
+  }`}
+  onClick={() => setActivePage("progress")}
+>
   📊 Progresi
-  <button
+</button>
+
+<button
   className={`nav-button ${
     activePage === "ai-coach" ? "active" : ""
   }`}
@@ -460,6 +469,7 @@ if (!session) {
 >
   ✨ AI Exam Coach
 </button>
+
 </button>
 
 
@@ -484,6 +494,7 @@ if (!session) {
         </button>
       </aside>
 
+
       <main className="main-content">
         <header className="topbar">
           <strong>StudyFlow / Detyrat e mia</strong>
@@ -492,10 +503,16 @@ if (!session) {
           </span>
         </header>
 
-<section className="page-section">
-  {activePage === "ai-coach" && (
-  <AIExamCoach onAddTask={addTask} />
-)}
+        <section className="page-section">
+          {activePage === "ai-coach" && (
+            <AIExamCoach onAddTask={addTask} />
+          )}
+
+          {activePage === "dashboard" && (
+            <StudyDashboard tasks={tasks} />
+          )}
+
+
  
 {activePage === "dashboard" && (
   <StudyDashboard tasks={tasks} />
@@ -633,21 +650,21 @@ if (!session) {
   )}
   
   
-{activePage === "calendar" && (
-  <StudyCalendar tasks={tasks} />
-)}
 
-{activePage === "progress" && (
-  <StudyProgress tasks={tasks} />
-)}
+  {activePage === "calendar" && (
+    <StudyCalendar tasks={tasks} />
+  )}
 
+  {activePage === "progress" && (
+    <StudyProgress tasks={tasks} />
+  )}
 
 </section>
-
-      </main>
-    </div>
-  );
+</main>
+</div>
+);
 }
+
 
 function TaskCreator({ onAdd }) {
   const [title, setTitle] = useState("");
