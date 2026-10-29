@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { supabase } from "./lib/supabaseClient";
 
@@ -25,17 +26,19 @@ export default function ResetPassword() {
 
     setLoading(true);
 
-    const { error } = await supabase.auth.updateUser({ password });
+    try {
+      const { error } = await supabase.auth.updateUser({ password });
 
-    if (error) {
-      setError(error.message);
-    } else {
+      if (error) throw error;
+
       setMessage("Fjalëkalimi u ndryshua me sukses! Mund të kyçesh.");
       setPassword("");
       setConfirmPassword("");
+    } catch (err) {
+      setError(err.message || "Ndodhi një gabim.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return (
