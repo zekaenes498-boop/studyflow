@@ -37,16 +37,30 @@ export default function AIExamCoach({ onAddTask }) {
         throw new Error("Kyçu përsëri për të vazhduar.");
       }
 
-      const { data, error: functionError } =
-        await supabase.functions.invoke("generate-quiz", {
-          body: {
-            topic: topic.trim(),
-            difficulty,
-            language: "sq",
-          },
-        });
+     const { data, error: functionError } =
+  await supabase.functions.invoke("ai-exam-coach", {
+    body: {
+      topic: topic.trim(),
+      difficulty,
+      language: "sq",
+    },
+  });
 
-      if (functionError) throw functionError;
+if (functionError) {
+  const details = await functionError.context
+    ?.json()
+    .catch(() => null);
+
+  throw new Error(
+    details?.error ||
+      functionError.message ||
+      "Nuk mund të lidhemi me AI Exam Coach."
+  );
+}
+
+if (data?.error) {
+  throw new Error(data.error);
+}
 
       const questions = data?.quiz?.questions;
 
