@@ -416,22 +416,22 @@ if (!session) {
           </span>
         </div>
         
+
 <p className="nav-label">MENUJA</p>
 
 <button
-  className={`nav-button ${activePage === "progress" ? "active" : ""}`}
-  onClick={() => setActivePage("progress")}
+  className={`nav-button ${activePage === "dashboard" ? "active" : ""}`}
+  onClick={() => setActivePage("dashboard")}
 >
-  📊 Progresi
+  🏠 Dashboard
 </button>
 
 <button
-  className={`nav-button ${activePage === "ai-coach" ? "active" : ""}`}
-  onClick={() => setActivePage("ai-coach")}
+  className={`nav-button ${activePage === "tasks" ? "active" : ""}`}
+  onClick={() => setActivePage("tasks")}
 >
-  ✨ AI Exam Coach
+  📝 Detyrat
 </button>
-
 
 <button
   className={`nav-button ${activePage === "focus" ? "active" : ""}`}
@@ -451,33 +451,16 @@ if (!session) {
   className={`nav-button ${activePage === "progress" ? "active" : ""}`}
   onClick={() => setActivePage("progress")}
 >
- 
-<button
-  className={`nav-button ${
-    activePage === "progress" ? "active" : ""
-  }`}
-  onClick={() => setActivePage("progress")}
->
   📊 Progresi
 </button>
 
 <button
-  className={`nav-button ${
-    activePage === "ai-coach" ? "active" : ""
-  }`}
+  className={`nav-button ${activePage === "ai-coach" ? "active" : ""}`}
   onClick={() => setActivePage("ai-coach")}
 >
   ✨ AI Exam Coach
 </button>
-
-</button>
-
-
-
-
-
-
-        <p className="nav-label">LLOGARIA</p>
+     <p className="nav-label">LLOGARIA</p>
 
         <div className="mini-profile">
           <div className="avatar">
@@ -511,13 +494,6 @@ if (!session) {
           {activePage === "dashboard" && (
             <StudyDashboard tasks={tasks} />
           )}
-
-
- 
-{activePage === "dashboard" && (
-  <StudyDashboard tasks={tasks} />
-)}
-
 
   {activePage === "tasks" && (
     <>
